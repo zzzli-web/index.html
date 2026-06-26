@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Тест на таланты и мотивацию</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#f7f6f2;color:#1a1a1a;min-height:100vh;padding:0 0 3rem}
+.wrap{max-width:600px;margin:0 auto;padding:1.25rem 1rem}
+
+/* INTRO */
+.intro{text-align:center;padding:2rem 1rem 1.5rem}
+.intro-badge{display:inline-block;background:#EEF2FF;color:#3730A3;border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600;letter-spacing:.04em;margin-bottom:1rem}
+.intro h1{font-size:22px;font-weight:700;margin-bottom:.5rem}
+.intro p{font-size:14px;color:#666;line-height:1.6;margin-bottom:1.5rem}
+.parts-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
+.part-card{background:#fff;border-radius:12px;padding:1rem;text-align:left;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.part-num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.part-card h3{font-size:14px;font-weight:700;margin-bottom:.25rem}
+.part-card p{font-size:12px;color:#888;line-height:1.4}
+.part1-num{color:#7F77DD}.part2-num{color:#5B8DEF}
+.start-btn{background:#1a1a1a;color:#fff;border:none;border-radius:12px;padding:1rem;font-size:15px;font-weight:600;cursor:pointer;width:100%;font-family:inherit;-webkit-appearance:none}
+.start-btn:active{background:#333}
+.intro-note{background:#f0effe;border-radius:10px;padding:.85rem 1rem;margin-bottom:1.5rem;font-size:13px;color:#4a4060;line-height:1.5;text-align:left}
+
+/* PART HEADER */
+.part-header{background:#fff;border-bottom:1px solid #eee;padding:.75rem 1rem;position:sticky;top:0;z-index:10}
+.part-header-inner{max-width:600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.part-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
+.part-label.p1{color:#7F77DD}.part-label.p2{color:#5B8DEF}
+.ph-prog{flex:1;height:4px;background:#e0ddd8;border-radius:2px;overflow:hidden}
+.ph-fill{height:100%;border-radius:2px;transition:width .3s}
+.p1-fill{background:#7F77DD}.p2-fill{background:#5B8DEF}
+.ph-count{font-size:11px;color:#aaa;flex-shrink:0;white-space:nowrap}
+
+/* QUESTION */
+.qwrap{padding:1rem}
+.qcat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.qcat.p1{color:#7F77DD}.qcat.p2{color:#5B8DEF}
+.qcard{background:#fff;border-radius:14px;padding:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:.75rem}
+.qtxt{font-size:15px;font-weight:500;line-height:1.5;color:#111;margin-bottom:1.1rem}
+
+/* Part 1 options */
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{background:#fafafa;border:1.5px solid #e8e5e0;border-radius:10px;padding:.75rem 1rem;font-size:14px;color:#222;cursor:pointer;text-align:left;line-height:1.4;font-family:inherit;width:100%;-webkit-appearance:none;transition:all .15s}
+.opt.sel{background:#EEEDFE;border-color:#7F77DD;color:#3C3489;font-weight:600}
+.opt:active{background:#EEEDFE;border-color:#AFA9EC}
+.opt:disabled{opacity:.7;cursor:default}
+.analysis{background:#f0effe;border-left:3px solid #7F77DD;border-radius:0 8px 8px 0;padding:.7rem 1rem;margin-top:.75rem;font-size:13px;color:#4a4060;line-height:1.6;display:none}
+.analysis.on{display:block}
+
+/* Part 2 scale */
+.scale{display:flex;gap:6px;align-items:center}
+.slabel{font-size:11px;color:#bbb;flex-shrink:0;width:46px;line-height:1.2}
+.slabel.r{text-align:right}
+.sbtns{display:flex;gap:5px;flex:1}
+.sBtn{flex:1;height:42px;border:1.5px solid #e0ddd8;border-radius:8px;background:#fafafa;cursor:pointer;font-size:13px;font-weight:600;color:#aaa;font-family:inherit;-webkit-appearance:none;transition:all .15s}
+.sBtn.sel1{background:#FFE8E8;border-color:#F87171;color:#C53030}
+.sBtn.sel2{background:#FEF3C7;border-color:#F59E0B;color:#92400E}
+.sBtn.sel3{background:#EEF2FF;border-color:#818CF8;color:#3730A3}
+.sBtn.sel4{background:#D1FAE5;border-color:#34D399;color:#065F46}
+.sBtn.sel5{background:#ECFDF5;border-color:#10B981;color:#064E3B}
+.sBtn:disabled{cursor:default;opacity:.7}
+.slegend{display:flex;justify-content:space-between;margin-top:.4rem;padding:0 2px}
+.leg{font-size:10px;color:#ccc}
+
+.nextbtn{background:#1a1a1a;color:#fff;border:none;border-radius:10px;padding:.85rem;font-size:15px;font-weight:600;cursor:pointer;width:100%;font-family:inherit;display:none;-webkit-appearance:none}
+.nextbtn.on{display:block}
+.nextbtn.p1c{background:#7F77DD}
+.nextbtn.p2c{background:#5B8DEF}
+
+/* TRANSITION */
+.transition-card{background:#fff;border-radius:16px;padding:2rem 1.5rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08);margin:1rem 0}
+.transition-card .big-check{font-size:48px;margin-bottom:1rem}
+.transition-card h2{font-size:20px;font-weight:700;margin-bottom:.5rem}
+.transition-card p{font-size:14px;color:#666;line-height:1.6;margin-bottom:1.5rem}
+.transition-card .next-part-btn{background:#5B8DEF;color:#fff;border:none;border-radius:12px;padding:.9rem 1.5rem;font-size:15px;font-weight:600;cursor:pointer;width:100%;font-family:inherit;-webkit-appearance:none}
+
+/* RESULTS */
+.rtitle{font-size:20px;font-weight:700;margin-bottom:3px}
+.rsub{font-size:13px;color:#888;margin-bottom:1.5rem}
+.sec-label{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.07em;margin:1.25rem 0 .6rem;padding-top:1.25rem;border-top:1px solid #eee}
+.sec-label.first{border-top:none;margin-top:0;padding-top:0}
+.tcard{background:#fff;border-radius:12px;padding:1rem 1.1rem;margin-bottom:.6rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.tname{font-size:15px;font-weight:700;color:#3C3489;margin-bottom:3px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.tbadge{font-size:11px;background:#EEEDFE;color:#534AB7;border-radius:20px;padding:2px 9px;font-weight:500}
+.tdesc{font-size:13px;color:#555;line-height:1.55;margin-bottom:5px}
+.tapply{font-size:12px;color:#aaa;font-style:italic}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-name{font-size:12px;color:#444;width:120px;flex-shrink:0;font-weight:500}
+.bar-track{flex:1;height:18px;background:#f0eee9;border-radius:20px;overflow:hidden}
+.bar-fill{height:100%;border-radius:20px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+.bar-fill span{font-size:10px;font-weight:700;color:#fff}
+.bar-score{font-size:12px;color:#888;width:24px;text-align:right;flex-shrink:0}
+.ins-card{background:#fff;border-radius:12px;padding:1rem 1.1rem;margin-bottom:.6rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ins-hdr{display:flex;align-items:center;gap:8px;margin-bottom:.35rem;flex-wrap:wrap}
+.ins-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ins-name{font-size:14px;font-weight:700;color:#111}
+.ins-lv{font-size:11px;border-radius:20px;padding:2px 8px;font-weight:600}
+.hi-dot{background:#10B981}.hi-lv{background:#D1FAE5;color:#065F46}
+.lo-dot{background:#F87171}.lo-lv{background:#FFE8E8;color:#C53030}
+.conc-card{background:#fff;border-radius:14px;padding:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:.75rem}
+.conc-card h3{font-size:15px;font-weight:700;margin-bottom:.5rem;color:#111}
+.conc-card p{font-size:13px;color:#444;line-height:1.65;margin-bottom:.6rem}
+.conc-card p:last-child{margin-bottom:0}
+.tag{display:inline-block;background:#EEF2FF;color:#3730A3;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;margin:2px}
+.phrase-box{background:linear-gradient(135deg,#EEEDFE,#E0F2FE);border:1.5px solid #A5B4FC;border-radius:12px;padding:1.1rem 1.25rem;margin-top:1rem}
+.phrase-box p{font-size:15px;font-weight:600;color:#312E81;line-height:1.6;font-style:italic}
+.divider{height:1px;background:#eee;margin:1.5rem 0}
+.reload{background:#fff;border:1.5px solid #e0ddd8;border-radius:10px;padding:.75rem;font-size:14px;color:#666;cursor:pointer;font-family:inherit;width:100%;margin-top:1.25rem;-webkit-appearance:none}
+.spinner{text-align:center;padding:2.5rem;color:#999;font-size:14px}
+.spin{width:26px;height:26px;border:2px solid #e0ddd8;border-top-color:#7F77DD;border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 1rem}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="introScreen" class="wrap">
+  <div class="intro">
+    <div class="intro-badge">Профессиональное профилирование</div>
+    <h1>Тест на таланты<br>и мотивацию</h1>
+    <p>Два инструмента в одном тесте — чтобы получить полную картину того, как вы думаете, что вас движет и в какой среде вы раскрываетесь.</p>
+  </div>
+  <div class="parts-row">
+    <div class="part-card">
+      <div class="part-num part1-num">Часть 1 · 20 вопросов</div>
+      <h3>Таланты</h3>
+      <p>Выявляем доминирующие темы по методологии CliftonStrengths</p>
+    </div>
+    <div class="part-card">
+      <div class="part-num part2-num">Часть 2 · 48 вопросов</div>
+      <h3>Мотивация</h3>
+      <p>Определяем 16 базовых желаний по профилю Рисса</p>
+    </div>
+  </div>
+  <div class="intro-note">⏱ Примерно 15 минут. Отвечайте быстро — первая реакция точнее всего. Нет правильных и неправильных ответов.</div>
+  <button class="start-btn" onclick="startPart1()" type="button">Начать тест →</button>
+</div>
+
+<!-- PART HEADER (sticky) -->
+<div id="partHeader" style="display:none" class="part-header">
+  <div class="part-header-inner">
+    <div id="phLabel" class="part-label p1">Часть 1 · Таланты</div>
+    <div class="ph-prog"><div id="phFill" class="ph-fill p1-fill" style="width:0%"></div></div>
+    <div id="phCount" class="ph-count">1 / 20</div>
+  </div>
+</div>
+
+<!-- QUIZ AREA -->
+<div id="quizArea" style="display:none" class="qwrap"></div>
+
+<!-- RESULTS -->
+<div id="resArea" style="display:none" class="wrap"></div>
+
+<script>
+// ============ PART 1 DATA ============
+var P1Q=[
+["Когда вы беретесь за новый проект, что вас заряжает больше всего?",
+["Разработка детального плана с чёткими шагами","Возможность придумать что-то совершенно новое","Объединить команду и зарядить всех энтузиазмом","Глубоко разобраться в теме до мельчайших деталей"],
+["Discipline","Ideation","Activator","Learner"],
+["Стремление к структуре — признак Discipline. Вы превращаете хаос в систему.","Генерация идей — ядро Ideation. Ваш мозг постоянно ищет нестандартные связи.","Вдохновлять других — суть Activator. Вы запускаете движение там, где другие думают.","Погружение в знания — основа Learner. Процесс познания сам по себе даёт вам энергию."]],
+["Как вы чаще всего принимаете важные решения?",
+["Анализирую данные и факты, ищу закономерности","Доверяю интуиции и внутреннему чутью","Советуюсь с людьми, которым доверяю","Взвешиваю риски, прежде чем действовать"],
+["Analytical","Strategic","Relator","Deliberative"],
+["Опора на данные — признак Analytical. Вы не верите на слово — вы проверяете.","Интуитивное мышление — признак Strategic. Вы видите паттерны там, где другие видят хаос.","Решения через доверенных людей — признак Relator. Глубина связей важнее их количества.","Осторожность — суть Deliberative. Вы замечаете риски, которые другие пропускают."]],
+["Что вы замечаете в других людях быстрее всего?",
+["Их сильные стороны и потенциал","Их эмоции и внутренние переживания","Уникальность каждого человека","Готовность брать ответственность и действовать"],
+["Developer","Empathy","Individualization","Responsibility"],
+["Видеть рост в других — признак Developer. Вы инвестируете в людей и радуетесь их развитию.","Считывание эмоций — суть Empathy. Вы чувствуете то, что другие скрывают.","Замечать уникальность — признак Individualization. Для вас каждый человек — отдельная история.","Ценить ответственных — связь с Responsibility. Вы доверяете тем, кто держит слово."]],
+["Как вы обычно реагируете, когда что-то идёт не по плану?",
+["Быстро нахожу альтернативное решение","Успокаиваю команду и восстанавливаю баланс","Анализирую, что пошло не так, чтобы не повторить","Продолжаю двигаться вперёд — препятствия меня не останавливают"],
+["Adaptability","Harmony","Analytical","Achiever"],
+["Гибкость в хаосе — признак Adaptability. Вы живёте настоящим и разворачиваетесь на ходу.","Восстановление баланса — суть Harmony. Вы ищете то, что объединяет, а не разделяет.","Анализ ошибок — признак Analytical. Неудача для вас — это данные для роста.","Движение вперёд несмотря ни на что — ядро Achiever. Внутренний двигатель не выключается."]],
+["Какой вид работы приносит вам наибольшее удовлетворение?",
+["Создавать что-то новое с нуля","Доводить начатое до совершенства","Помогать другим расти и добиваться целей","Решать сложные логические задачи"],
+["Ideation","Maximizer","Developer","Analytical"],
+["Создание нового — признак Ideation. Пустой лист — ваш лучший партнёр.","Стремление к совершенству — суть Maximizer. Вы улучшаете хорошее, а не чините плохое.","Рост других — признак Developer. Чужие успехи вдохновляют вас не меньше своих.","Решение логических задач — признак Analytical. Сложность вас привлекает, а не пугает."]],
+["Что лучше всего описывает ваш стиль в команде?",
+["Я объединяю людей и строю мосты между ними","Я задаю направление и веду за собой","Я исполняю чётко и надёжно","Я генерирую идеи и задаю вопросы «а что если...»"],
+["Connectedness","Command","Responsibility","Ideation"],
+["Строить мосты — признак Connectedness. Вы видите связи там, где другие видят разрозненность.","Задавать направление — суть Command. Вы берёте пространство и ведёте с ясностью.","Надёжное исполнение — признак Responsibility. На вас можно положиться.","Генерация идей — признак Ideation. Вы двигаете мышление команды в новые территории."]],
+["Как вы относитесь к конкуренции?",
+["Она меня заряжает — я хочу быть лучшим","Я конкурирую прежде всего с собой","Я предпочитаю сотрудничество соревнованию","Мне важно соревноваться с достойными соперниками"],
+["Competition","Achiever","Harmony","Competition"],
+["Желание быть первым — ядро Competition. Победа имеет смысл только когда есть с кем сравниваться.","Внутренняя конкуренция — признак Achiever. Вы поднимаете планку сами для себя каждый день.","Предпочтение сотрудничества — признак Harmony. Вы создаёте среду, где выигрывают все.","Достойные соперники — тоже признак Competition. Победа над сильным противником значит больше."]],
+["Когда вы думаете о будущем, что занимает ваши мысли?",
+["Образ идеального мира, который я хочу создать","Конкретные шаги к следующей цели","Люди, которых хочу вдохновить","Тренды и паттерны, которые я замечаю"],
+["Futuristic","Focus","Woo","Strategic"],
+["Видение идеального будущего — суть Futuristic. Вы живёте завтрашним днём и тянете за собой других.","Фокус на следующем шаге — признак Focus. Вы не теряете нить, даже когда вокруг хаос.","Вдохновение людей — признак Woo. Вы притягиваете внимание и зажигаете окружающих.","Видение паттернов — суть Strategic. Ваш мозг — детектор сигналов из шума."]],
+["Как вы чувствуете себя, когда нужно публично выступить?",
+["В своей стихии — я люблю быть в центре внимания","Комфортно, если хорошо подготовился","Лучше один на один — в этом больше глубины","Мне важно, чтобы идея захватила аудиторию, а не я сам"],
+["Woo","Deliberative","Relator","Communication"],
+["Любовь к публике — признак Woo. Вы умеете завоёвывать симпатию незнакомцев.","Успех через подготовку — признак Deliberative. Вы не импровизируете — вы готовитесь.","Глубина один на один — признак Relator. Настоящий контакт важнее масштаба аудитории.","Идея важнее личности — признак Communication. Вы — проводник смысла."]],
+["Что вас больше всего раздражает в рабочей среде?",
+["Хаос, непоследовательность и отсутствие системы","Медлительность и бесконечные обсуждения без действий","Холодность и отсутствие человеческого контакта","Поверхностность и нежелание разобраться глубоко"],
+["Discipline","Activator","Relator","Learner"],
+["Раздражение от хаоса — признак Discipline. Вы создаёте порядок как автоматическую реакцию.","Нетерпение к медлительности — суть Activator. Вы хотите действий, а не совещаний.","Потребность в человеческом тепле — признак Relator. Холодная среда вас истощает.","Неприязнь к поверхностности — признак Learner. Глубина — ваш стандарт."]],
+["Как вы обычно обучаетесь чему-то новому?",
+["Читаю всё подряд и собираю максимум информации","Сразу пробую на практике — обучение через действие","Обсуждаю с другими — разговор помогает мне думать","Ищу систему и структуру за новыми знаниями"],
+["Input","Activator","Communication","Learner"],
+["Сбор информации — ядро Input. Ваша голова — живая библиотека.","Обучение через действие — признак Activator. Вы учитесь лучше всего в движении.","Обучение через разговор — признак Communication. Диалог помогает вам структурировать мысли.","Поиск системы — признак Learner. Вы не просто запоминаете — вы понимаете структуру."]],
+["Когда вы видите несправедливость, как вы реагируете?",
+["Говорю открыто — честность важнее комфорта","Стараюсь найти справедливое решение для всех сторон","Проверяю факты, прежде чем делать выводы","Действую немедленно, чтобы исправить ситуацию"],
+["Command","Harmony","Analytical","Activator"],
+["Прямота и честность — суть Command. Вы называете вещи своими именами.","Поиск справедливого решения — признак Harmony. Вы цените равенство и правила для всех.","Проверка фактов — признак Analytical. Вы не поддаётесь на эмоции — сначала данные.","Немедленное действие — признак Activator. Вы не терпите несправедливости в статике."]],
+["Что даёт вам ощущение смысла в работе?",
+["Когда вижу реальный вклад в чью-то жизнь","Когда достигаю результата, который казался сложным","Когда нахожу элегантное решение сложной проблемы","Когда моя работа — часть чего-то большего"],
+["Developer","Achiever","Strategic","Connectedness"],
+["Вклад в жизни других — признак Developer. Вы работаете не для резюме, а для людей.","Преодоление трудной цели — суть Achiever. Победа над сложным даёт вам топливо.","Элегантное решение — признак Strategic. Красота мышления — ваша награда.","Принадлежность к большему — признак Connectedness. Вы видите себя частью истории."]],
+["Как вы ведёте себя, когда в команде есть конфликт?",
+["Пытаюсь найти точки согласия и сгладить напряжение","Говорю прямо, что думаю — даже если неудобно","Слушаю каждую сторону, чтобы понять глубинные причины","Предлагаю конкретный план для решения ситуации"],
+["Harmony","Command","Empathy","Focus"],
+["Поиск согласия — суть Harmony. Вы строите мосты там, где другие строят стены.","Прямолинейность в конфликте — признак Command. Вы берёте управление, когда другие колеблются.","Глубокое слушание — признак Empathy. Вы слышите то, что не было сказано.","Практический план — признак Focus. Вы хотите решения, а не бесконечного анализа."]],
+["Какую роль вы берёте в новой группе незнакомых людей?",
+["Быстро знакомлюсь и нахожу общий язык с каждым","Наблюдаю и жду, когда смогу внести ценный вклад","Начинаю объединять людей вокруг общей цели","Выясняю, как работает группа и чем могу помочь"],
+["Woo","Deliberative","Activator","Responsibility"],
+["Лёгкое знакомство — ядро Woo. Вы превращаете незнакомцев в союзников за несколько минут.","Наблюдение и выбор момента — признак Deliberative. Вы входите точно, не суетливо.","Объединение вокруг цели — признак Activator. Вы естественно берёте инициативу.","Понять и помочь — признак Responsibility. Надёжность — ваша визитная карточка."]],
+["Как вы относитесь к рутинным задачам?",
+["Хорошо — нахожу способ сделать их максимально эффективными","Плохо — мне нужна новизна и разнообразие","Нейтрально — если это часть важной цели","Терпимо, но стараюсь автоматизировать или делегировать"],
+["Discipline","Ideation","Achiever","Strategic"],
+["Оптимизация рутины — признак Discipline. Вы создаёте системы, которые делают рутину невидимой.","Нужна новизна — признак Ideation. Статика вас иссушает.","Рутина ради цели — признак Achiever. Если задача ведёт к результату, вы делаете её с полной отдачей.","Делегирование рутины — признак Strategic. Вы концентрируетесь на высокоуровневом мышлении."]],
+["Что для вас значит «быть хорошим коллегой»?",
+["Всегда выполнять обещания и быть надёжным","Помогать другим расти и справляться с трудностями","Привносить позитив и поддерживать высокий дух команды","Делиться знаниями и экспертизой бескорыстно"],
+["Responsibility","Developer","Positivity","Input"],
+["Надёжность — суть Responsibility. Ваше слово — контракт.","Рост других — признак Developer. Вы вкладываете в людей, даже когда никто не видит.","Позитивная энергия — суть Positivity. Вы поднимаете уровень энергии в любом пространстве.","Бескорыстный обмен знаниями — признак Input. Накопленные знания должны работать."]],
+["Когда вас хвалят, что вам приятнее всего услышать?",
+["«Ты сделал это лучше всех» — признание превосходства","«Ты изменил ситуацию к лучшему» — вклад и влияние","«На тебя всегда можно положиться» — доверие","«Как тебе пришла эта идея?» — оригинальность мышления"],
+["Competition","Developer","Responsibility","Ideation"],
+["Признание превосходства — признак Competition. Вы хотите быть лучшим, и это двигатель роста.","Вклад и влияние — признак Developer. Вы работаете ради изменений, а не ради оценок.","Доверие — суть Responsibility. Репутация надёжного человека для вас ценнее всего.","Оригинальность мышления — признак Ideation. Быть источником новых идей — ваша гордость."]],
+["Как вы справляетесь с большим объёмом задач?",
+["Расставляю приоритеты и фокусируюсь на главном","Создаю системы и списки, чтобы ничего не потерять","Делегирую то, что могут сделать другие","Нахожу связи между задачами и работаю над несколькими параллельно"],
+["Focus","Discipline","Command","Strategic"],
+["Приоритизация — суть Focus. Вы отсекаете лишнее и держите прицел на главном.","Системы и списки — суть Discipline. Вы создаёте надёжные структуры для управления сложностью.","Делегирование — признак Command. Вы знаете, кому доверить, и доверяете.","Параллельные связи — признак Strategic. Вы видите паттерны там, где другие видят хаос."]],
+["Как бы вы описали своё отношение к переменам?",
+["Я их инициирую — застой меня угнетает","Я адаптируюсь легко — перемены это возможности","Взвешиваю последствия прежде чем принять перемены","Поддерживаю перемены, если они улучшают жизнь людей"],
+["Activator","Adaptability","Deliberative","Developer"],
+["Инициирование перемен — суть Activator. Вы не ждёте разрешения — вы начинаете.","Лёгкая адаптация — суть Adaptability. Неопределённость для вас — это свобода, а не угроза.","Взвешенность — признак Deliberative. Вы защищаете от поспешных решений.","Перемены ради людей — признак Developer. Вы оцениваете изменения через их влияние на людей."]]
+];
+
+// ============ PART 2 DATA ============
+var P2Q=[
+["Мне нравится руководить и принимать решения за команду","power"],
+["Я стремлюсь занимать лидирующую позицию в любой группе","power"],
+["Влияние на других людей — важная часть того, что я делаю","power"],
+["Я предпочитаю работать самостоятельно, без опоры на других","independence"],
+["Возможность делать всё по-своему важна для моего счастья","independence"],
+["Я ценю автономию — когда никто не вмешивается в мои решения","independence"],
+["Мне нравится разбираться в сложных темах и искать ответы на вопросы","curiosity"],
+["Я задаю много вопросов и люблю докапываться до истины","curiosity"],
+["Интеллектуальные занятия занимают значительную часть моего времени","curiosity"],
+["Мне важно чувствовать, что меня принимают и одобряют окружающие","acceptance"],
+["Критика или отказ задевает меня сильнее, чем большинство людей","acceptance"],
+["Мне важно нравиться людям, с которыми я взаимодействую","acceptance"],
+["В моей жизни и работе должна быть чёткая структура и система","order"],
+["Я планирую заранее и веду списки дел, расписания или таблицы","order"],
+["Беспорядок и непредсказуемость вызывают у меня дискомфорт","order"],
+["Я склонен(на) хранить вещи — мне трудно избавляться от накопленного","saving"],
+["Я бережно отношусь к деньгам и стараюсь создавать запасы","saving"],
+["Коллекционирование или накопление ресурсов приносит мне удовольствие","saving"],
+["Для меня важно жить в соответствии со своими моральными принципами","honor"],
+["Верность традициям, семье или своим корням — часть моей идентичности","honor"],
+["Я считаю себя человеком с чёткими нравственными принципами","honor"],
+["Несправедливость в обществе глубоко меня беспокоит","idealism"],
+["Я готов(а) жертвовать личными интересами ради общего блага","idealism"],
+["Я слежу за тем, что происходит в обществе, и хочу делать мир лучше","idealism"],
+["Мне нужно проводить много времени с людьми, чтобы чувствовать себя хорошо","social"],
+["Широкое общение и новые знакомства заряжают меня энергией","social"],
+["Я чувствую себя одиноко, когда долго нахожусь без общения","social"],
+["Воспитание детей и семья — одна из главных ценностей в моей жизни","family"],
+["Я провожу много времени с семьёй и ставлю её интересы высоко","family"],
+["Быть хорошим родителем или создать крепкую семью — важная цель для меня","family"],
+["Мне важно занимать уважаемое положение в обществе или профессии","status"],
+["Престиж, репутация и признание имеют для меня значение","status"],
+["Я обращаю внимание на то, как меня воспринимают окружающие по статусу","status"],
+["Когда меня обижают, я стремлюсь восстановить справедливость","vengeance"],
+["Я остро реагирую на нечестную игру и не могу просто отпустить обиду","vengeance"],
+["Мне нравится соревноваться и побеждать","vengeance"],
+["Красота окружающей среды, дизайна и искусства важна для меня","romance"],
+["Я замечаю эстетику в деталях — интерьер, визуальный стиль, гармония","romance"],
+["Я стремлюсь окружать себя красивыми вещами и пространствами","romance"],
+["Еда занимает важное место в моей жизни — вкус, качество, ритуал","eating"],
+["Я уделяю много внимания тому, что и как ем","eating"],
+["Хорошая еда — одно из настоящих удовольствий жизни для меня","eating"],
+["Физическая активность и движение — важная часть моей жизни","activity"],
+["Регулярный спорт или тренировки дают мне энергию и ощущение жизненности","activity"],
+["Когда я долго не двигаюсь, мне становится физически некомфортно","activity"],
+["Мне важно чувствовать себя в безопасности и избегать тревожных ситуаций","tranquility"],
+["Я много сил трачу на то, чтобы снизить неопределённость и риск в жизни","tranquility"],
+["Эмоциональное спокойствие — один из моих главных приоритетов","tranquility"]
+];
+
+var P2DESIRES={
+  power:{name:"Власть",desc:"Вы стремитесь к влиянию, руководству и принятию решений.",role:"Лидер, руководитель, основатель",trap:"Риск: подавлять инициативу других, воспринимать несогласие как угрозу."},
+  independence:{name:"Независимость",desc:"Вам важна свобода действовать по-своему. Зависимость от других вас ограничивает.",role:"Предприниматель, фриланс, эксперт",trap:"Риск: сложно делегировать и работать в команде с жёсткими рамками."},
+  curiosity:{name:"Любознательность",desc:"Вы заряжаетесь от интеллектуального поиска. Вопросы важнее ответов.",role:"Исследователь, стратег, аналитик",trap:"Риск: уходить в изучение вместо действия."},
+  acceptance:{name:"Приятие",desc:"Вам важно чувствовать, что вас ценят и принимают.",role:"Коллективная работа, HR, клиентский сервис",trap:"Риск: избегать конфликтов, соглашаться в ущерб себе."},
+  order:{name:"Порядок",desc:"Вы создаёте порядок там, где его нет. Системы и планы дают ощущение контроля.",role:"Операционный менеджер, проджект, аналитик",trap:"Риск: жёсткость к изменениям, дискомфорт в хаотичных средах."},
+  saving:{name:"Сбережения",desc:"Вы бережёте ресурсы — время, деньги, вещи.",role:"Финансы, логистика, управление ресурсами",trap:"Риск: сложность с делегированием и инвестициями."},
+  honor:{name:"Честь",desc:"Моральные ценности — ваш внутренний компас. Вы живёте по принципам.",role:"Юрист, лидер с ценностями, наставник",trap:"Риск: негибкость, осуждение тех, кто живёт иначе."},
+  idealism:{name:"Идеализм",desc:"Вы хотите менять мир к лучшему. Социальная несправедливость вас задевает.",role:"Социальное предпринимательство, НКО, продукты с миссией",trap:"Риск: разочарование от несовершенства мира."},
+  social:{name:"Соц. контакты",desc:"Люди — ваш источник энергии. Вам нужно общение, чтобы чувствовать себя живым.",role:"Продажи, PR, нетворкинг, публичные роли",trap:"Риск: зависимость от внешней обратной связи."},
+  family:{name:"Семья",desc:"Семья и воспитание детей — одна из главных ценностей.",role:"Роли с гибким графиком, проекты рядом с домом",trap:"Риск: конфликт между семьёй и карьерными амбициями."},
+  status:{name:"Обществ. положение",desc:"Вам важно занимать уважаемую позицию. Репутация — реальный мотиватор.",role:"Публичное лидерство, экспертная позиция, медиа",trap:"Риск: решения ради статуса, а не смысла."},
+  vengeance:{name:"Соревновательность",desc:"Вы остро реагируете на несправедливость и стремитесь к победе.",role:"Переговоры, продажи, юриспруденция",trap:"Риск: тратить энергию на конфликты, которые не стоят того."},
+  romance:{name:"Красота / Эстетика",desc:"Красота и визуальная гармония важны для вас. Вы замечаете детали, которые другие пропускают.",role:"Дизайн, бренд, продукт, творческие роли",trap:"Риск: завышенные стандарты к окружению."},
+  eating:{name:"Насыщение",desc:"Еда — настоящее удовольствие, а не просто топливо.",role:"Гастрономия, hospitality, health-направления",trap:"Риск: еда как эмоциональная компенсация."},
+  activity:{name:"Физ. активность",desc:"Физическое движение заряжает вас. Без активности вы чувствуете беспокойство.",role:"Роли с физической динамикой, спорт",trap:"Риск: дискомфорт в сидячих офисных форматах."},
+  tranquility:{name:"Покой",desc:"Вам важна эмоциональная безопасность. Вы стремитесь снизить тревогу и риск.",role:"Стабильные структурированные среды",trap:"Риск: избегание необходимых рисков и изменений."}
+};
+
+var P2ORDER=["power","independence","curiosity","acceptance","order","saving","honor","idealism","social","family","status","vengeance","romance","eating","activity","tranquility"];
+var P2COLORS=["#5B8DEF","#7C6FF7","#EC7DBF","#F59E0B","#10B981","#06B6D4","#EF4444","#84CC16","#F97316","#A78BFA","#14B8A6","#F43F5E","#8B5CF6","#FBBF24","#22C55E","#64748B"];
+
+var TD={
+  Achiever:{desc:"Неутолимая потребность в достижениях. Каждый день должен приносить результат.",apply:"Ставьте ежедневные цели, берите проекты с чёткими метриками успеха.",domain:"Executing"},
+  Activator:{desc:"Вы превращаете мысли в действия. Нетерпение к медлительности — ваш двигатель.",apply:"Берите роли, где нужно запускать с нуля: стартапы, новые направления.",domain:"Influencing"},
+  Adaptability:{desc:"Вы живёте настоящим. Неопределённость — ваш ресурс, а не угроза.",apply:"Работайте в динамичных средах, кризис-менеджменте, гибких командах.",domain:"Relationship Building"},
+  Analytical:{desc:"Вы ищете причины и доказательства. Данные — ваш язык.",apply:"Анализ данных, стратегическое планирование, консалтинг.",domain:"Strategic Thinking"},
+  Command:{desc:"Вы берёте пространство. В кризисе ваша прямота становится спасением для других.",apply:"Лидерство, переговоры, управление в условиях неопределённости.",domain:"Influencing"},
+  Communication:{desc:"Вы превращаете идеи в слова, а слова — в образы, которые трогают.",apply:"Публичные выступления, написание текстов, обучение.",domain:"Influencing"},
+  Competition:{desc:"Победа имеет смысл только при достойном сопернике.",apply:"Продажи, конкурентные рынки, рейтинговые роли.",domain:"Influencing"},
+  Connectedness:{desc:"Вы видите нити, соединяющие всё: людей, события, идеи.",apply:"Стратегические партнёрства, медиация.",domain:"Relationship Building"},
+  Deliberative:{desc:"Вы тщательно взвешиваете риски. Осторожность — это интеллект, а не страх.",apply:"Управление рисками, юриспруденция, финансовое планирование.",domain:"Executing"},
+  Developer:{desc:"Вы видите потенциал в каждом человеке и инвестируете в его рост.",apply:"Коучинг, наставничество, HR, педагогика.",domain:"Relationship Building"},
+  Discipline:{desc:"Вы создаёте структуры, превращающие хаос в порядок.",apply:"Операционный менеджмент, проектное управление, системная работа.",domain:"Executing"},
+  Empathy:{desc:"Вы чувствуете эмоциональный климат комнаты. Невысказанное — ваша область.",apply:"Коучинг, психология, медицина, социальная работа.",domain:"Relationship Building"},
+  Focus:{desc:"Вы устанавливаете приоритеты и держите курс. Отвлечения вам не страшны.",apply:"Глубокая работа, исследования, стратегическое исполнение.",domain:"Executing"},
+  Futuristic:{desc:"Вы вдохновляетесь образами будущего и тянете за собой других.",apply:"Визионерское лидерство, инновации, предпринимательство.",domain:"Strategic Thinking"},
+  Harmony:{desc:"Вы ищете согласие и строите мосты там, где другие строят стены.",apply:"Медиация, управление командой, дипломатия.",domain:"Relationship Building"},
+  Ideation:{desc:"Ваш мозг постоянно генерирует новые связи и нестандартные решения.",apply:"Инновации, дизайн, стартапы, творческие роли.",domain:"Strategic Thinking"},
+  Individualization:{desc:"Вы замечаете уникальность каждого и подбираете индивидуальный подход.",apply:"Коучинг, управление талантами, персонализированный сервис.",domain:"Relationship Building"},
+  Input:{desc:"Вы собираете знания, идеи и ресурсы. Ваша голова — живая библиотека.",apply:"Исследования, консалтинг, обучение, журналистика.",domain:"Strategic Thinking"},
+  Learner:{desc:"Процесс познания заряжает вас независимо от результата.",apply:"Роли с постоянным обучением: R&D, академическая среда, технологии.",domain:"Strategic Thinking"},
+  Maximizer:{desc:"Вы улучшаете хорошее, делая его исключительным.",apply:"Качество, продуктовая стратегия, развитие талантов.",domain:"Influencing"},
+  Positivity:{desc:"Вы привносите энтузиазм и поднимаете энергию вокруг себя.",apply:"HR, обучение, клиентский сервис, продажи.",domain:"Relationship Building"},
+  Relator:{desc:"Глубина отношений важнее их количества. Вы инвестируете в избранных.",apply:"Долгосрочные партнёрства, наставничество, консалтинг.",domain:"Relationship Building"},
+  Responsibility:{desc:"Ваше слово — контракт. Вы берёте психологическое владение за обещания.",apply:"Управление, доверенные роли, исполнение критических задач.",domain:"Executing"},
+  Strategic:{desc:"Вы видите несколько путей к цели и выбираете лучший.",apply:"Стратегическое консультирование, предпринимательство, лидерство.",domain:"Strategic Thinking"},
+  Woo:{desc:"Вы завоёвываете симпатию незнакомцев. Новые знакомства — ваша стихия.",apply:"Продажи, нетворкинг, PR, бизнес-развитие.",domain:"Influencing"}
+};
+
+// ============ STATE ============
+var state='intro'; // intro, part1, transition, part2, results
+var p1cur=0, p1scores={}, p1answered=false;
+var p2cur=0, p2answers={};
+
+// ============ PART 1 ============
+function startPart1(){
+  document.getElementById('introScreen').style.display='none';
+  document.getElementById('partHeader').style.display='block';
+  document.getElementById('quizArea').style.display='block';
+  state='part1';
+  renderP1(0);
+}
+
+function renderP1(i){
+  var q=P1Q[i];
+  updateHeader('p1','Часть 1 · Таланты',i+1,20,'p1-fill','#7F77DD');
+  var html='<div class="qcat p1">'+getCliftonCat(q[2][0])+'</div>';
+  html+='<div class="qcard"><div class="qtxt">'+q[0]+'</div><div class="opts" id="opts">';
+  for(var j=0;j<q[1].length;j++){
+    html+='<button type="button" class="opt" data-idx="'+j+'" onclick="pickP1('+j+')">'+q[1][j]+'</button>';
+  }
+  html+='</div><div class="analysis" id="anal"></div></div>';
+  html+='<button type="button" class="nextbtn p1c" id="nbtn" onclick="nextP1()">'+( i<19?'Следующий вопрос →':'Завершить часть 1 →')+'</button>';
+  document.getElementById('quizArea').innerHTML=html;
+  p1answered=false;
+}
+
+function getCliftonCat(theme){
+  var d=TD[theme];
+  return d?d.domain:'';
+}
+
+function pickP1(i){
+  if(p1answered)return;
+  p1answered=true;
+  var q=P1Q[p1cur];
+  var th=q[2][i];
+  p1scores[th]=(p1scores[th]||0)+1;
+  var btns=document.querySelectorAll('.opt');
+  btns.forEach(function(b,k){b.disabled=true;if(k===i)b.classList.add('sel');});
+  document.getElementById('anal').textContent=q[3][i];
+  document.getElementById('anal').className='analysis on';
+  document.getElementById('nbtn').className='nextbtn p1c on';
+}
+
+function nextP1(){
+  p1cur++;
+  if(p1cur<20)renderP1(p1cur);
+  else showTransition();
+}
+
+// ============ TRANSITION ============
+function showTransition(){
+  document.getElementById('partHeader').style.display='none';
+  document.getElementById('quizArea').innerHTML='<div class="transition-card"><div class="big-check">✅</div><h2>Часть 1 завершена!</h2><p>Таланты определены. Теперь переходим ко второй части — мотивационный профиль Рисса.<br><br>48 утверждений, оцениваете по шкале 1–5. Ещё около 7 минут.</p><button type="button" class="next-part-btn" onclick="startPart2()">Начать часть 2 →</button></div>';
+}
+
+// ============ PART 2 ============
+function startPart2(){
+  document.getElementById('partHeader').style.display='block';
+  state='part2';
+  renderP2(0);
+}
+
+function renderP2(i){
+  var q=P2Q[i];
+  var dname=P2DESIRES[q[1]]?P2DESIRES[q[1]].name:'';
+  updateHeader('p2','Часть 2 · Мотивация',i+1,48,'p2-fill','#5B8DEF');
+  var html='<div class="qcat p2">'+dname+'</div>';
+  html+='<div class="qcard"><div class="qtxt">'+q[0]+'</div>';
+  html+='<div class="scale"><div class="slabel">Не про меня</div><div class="sbtns" id="sbtns">';
+  for(var v=1;v<=5;v++){
+    html+='<button type="button" class="sBtn'+(p2answers[i]===v?' sel'+v:'')+'" data-v="'+v+'" onclick="pickP2('+v+')">'+v+'</button>';
+  }
+  html+='</div><div class="slabel r">Про меня</div></div>';
+  html+='<div class="slegend"><span class="leg">1</span><span class="leg">2</span><span class="leg">3</span><span class="leg">4</span><span class="leg">5</span></div>';
+  html+='</div>';
+  html+='<button type="button" class="nextbtn p2c'+(p2answers[i]!==undefined?' on':'')+'" id="nbtn" onclick="nextP2()">'+(i<47?'Следующее →':'Получить результаты →')+'</button>';
+  document.getElementById('quizArea').innerHTML=html;
+}
+
+function pickP2(val){
+  p2answers[p2cur]=val;
+  document.querySelectorAll('.sBtn').forEach(function(b,k){b.className='sBtn'+(k+1===val?' sel'+(k+1):'');});
+  var nb=document.getElementById('nbtn');
+  nb.className='nextbtn p2c on';
+  nb.textContent=p2cur<47?'Следующее →':'Получить результаты →';
+}
+
+function nextP2(){
+  if(p2answers[p2cur]===undefined)return;
+  p2cur++;
+  if(p2cur<48)renderP2(p2cur);
+  else showResults();
+}
+
+// ============ HEADER ============
+function updateHeader(part,label,cur,total,fillId,color){
+  document.getElementById('phLabel').textContent=label;
+  document.getElementById('phLabel').className='part-label '+( part==='p1'?'p1':'p2');
+  document.getElementById('phFill').className='ph-fill '+(part==='p1'?'p1-fill':'p2-fill');
+  document.getElementById('phFill').style.width=Math.round((cur/total)*100)+'%';
+  document.getElementById('phCount').textContent=cur+' / '+total;
+}
+
+// ============ RESULTS ============
+function showResults(){
+  document.getElementById('partHeader').style.display='none';
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('resArea').style.display='block';
+  document.getElementById('resArea').innerHTML='<div class="spinner"><div class="spin"></div>Строим ваш полный профиль...</div>';
+  setTimeout(buildResults,1500);
+}
+
+function getP2Score(key){
+  var sum=0,cnt=0;
+  for(var i=0;i<P2Q.length;i++){
+    if(P2Q[i][1]===key&&p2answers[i]!==undefined){sum+=p2answers[i];cnt++;}
+  }
+  return cnt>0?Math.round((sum/cnt)*10)/10:0;
+}
+
+function buildResults(){
+  // P1 scores
+  var p1sorted=Object.entries(p1scores).sort(function(a,b){return b[1]-a[1];});
+  var top5=p1sorted.slice(0,5);
+
+  // P2 scores
+  var p2scores={};
+  P2ORDER.forEach(function(k){p2scores[k]=getP2Score(k);});
+  var p2sorted=P2ORDER.slice().sort(function(a,b){return p2scores[b]-p2scores[a];});
+  var p2high=p2sorted.filter(function(k){return p2scores[k]>=4;});
+  var p2low=p2sorted.filter(function(k){return p2scores[k]<=2;});
+
+  var rs=document.getElementById('resArea');
+  var h='<div class="rtitle">Ваш полный профиль</div><div class="rsub">Часть 1: Таланты · Часть 2: Мотивация по Риссу</div>';
+
+  // ===== PART 1 RESULTS =====
+  h+='<div style="background:#EEEDFE;border-radius:10px;padding:.6rem 1rem;margin-bottom:.75rem;font-size:12px;font-weight:700;color:#534AB7;text-transform:uppercase;letter-spacing:.05em">Часть 1 · Таланты CliftonStrengths</div>';
+  h+='<div class="sec-label first">Топ-5 доминирующих талантов</div>';
+  top5.forEach(function(t){
+    var th=t[0];
+    var info=TD[th]||{desc:'Уникальный талант.',apply:'Используйте его осознанно.',domain:''};
+    h+='<div class="tcard"><div class="tname">'+th+' <span class="tbadge">'+info.domain+'</span></div><div class="tdesc">'+info.desc+'</div><div class="tapply">→ '+info.apply+'</div></div>';
+  });
+
+  // ===== PART 2 RESULTS =====
+  h+='<div class="divider"></div>';
+  h+='<div style="background:#EEF2FF;border-radius:10px;padding:.6rem 1rem;margin-bottom:.75rem;font-size:12px;font-weight:700;color:#3730A3;text-transform:uppercase;letter-spacing:.05em">Часть 2 · Мотивационный профиль Рисса</div>';
+  h+='<div class="sec-label first">Все 16 желаний</div>';
+  P2ORDER.forEach(function(k,idx){
+    var s=p2scores[k];
+    var pct=Math.round((s/5)*100);
+    h+='<div class="bar-row"><div class="bar-name">'+P2DESIRES[k].name+'</div>';
+    h+='<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+P2COLORS[idx]+'"><span>'+s+'</span></div></div>';
+    h+='<div class="bar-score">'+s+'</div></div>';
+  });
+
+  if(p2high.length>0){
+    h+='<div class="sec-label">🟢 Главные мотиваторы (4–5)</div>';
+    p2high.forEach(function(k){
+      h+='<div class="ins-card"><div class="ins-hdr"><div class="ins-dot hi-dot"></div><div class="ins-name">'+P2DESIRES[k].name+'</div><span class="ins-lv hi-lv">'+p2scores[k]+'/5</span></div>';
+      h+='<div style="font-size:13px;color:#555;line-height:1.55">'+P2DESIRES[k].desc+'</div></div>';
+    });
+  }
+
+  if(p2low.length>0){
+    h+='<div class="sec-label">🔴 Слабые желания (1–2)</div>';
+    p2low.forEach(function(k){
+      h+='<div class="ins-card"><div class="ins-hdr"><div class="ins-dot lo-dot"></div><div class="ins-name">'+P2DESIRES[k].name+'</div><span class="ins-lv lo-lv">'+p2scores[k]+'/5</span></div>';
+      h+='<div style="font-size:13px;color:#555;line-height:1.55">'+P2DESIRES[k].desc.split('.')[0]+' — для вас это не приоритет.</div></div>';
+    });
+  }
+
+  // ===== COMBINED CONCLUSION =====
+  h+='<div class="divider"></div>';
+  h+='<div style="background:#f0fdf4;border-radius:10px;padding:.6rem 1rem;margin-bottom:.75rem;font-size:12px;font-weight:700;color:#065F46;text-transform:uppercase;letter-spacing:.05em">Общий вывод · Оба профиля вместе</div>';
+  h+=buildConclusion(top5.map(function(t){return t[0];}), p2high, p2low, p2scores);
+
+  h+='<button type="button" class="reload" onclick="location.reload()">↩ Пройти тест заново</button>';
+  rs.innerHTML=h;
+}
+
+function has(arr,k){return arr.indexOf(k)>=0;}
+
+function buildConclusion(talents, p2high, p2low, p2scores){
+  var hk=p2high.map(function(x){return x;});
+  var isPower=has(hk,'power'),isIndep=has(hk,'independence'),isCuriosity=has(hk,'curiosity');
+  var isOrder=has(hk,'order'),isIdeal=has(hk,'idealism'),isSocial=has(hk,'social');
+  var isRomance=has(hk,'romance'),isHonor=has(hk,'honor'),isStatus=has(hk,'status');
+  var isTranq=has(hk,'tranquility'),isFamily=has(hk,'family');
+  var hasDisc=has(talents,'Discipline'),hasResp=has(talents,'Responsibility'),hasFocus=has(talents,'Focus');
+  var hasIdea=has(talents,'Ideation'),hasAct=has(talents,'Activator'),hasAch=has(talents,'Achiever');
+  var hasDev=has(talents,'Developer'),hasEmp=has(talents,'Empathy'),hasAnal=has(talents,'Analytical');
+  var hasStrat=has(talents,'Strategic'),hasCmd=has(talents,'Command');
+
+  var archetype='',archdesc='',roles=[],recs=[],traps=[],phrase='';
+
+  if(isPower&&isIndep&&hasAct) {archetype='Независимый лидер-предприниматель';archdesc='Вы хотите влиять и действовать — но по-своему, без чужих рамок. Лучший сценарий: основатель, партнёр, эксперт с собственным голосом. Наёмная работа с жёстким контролем будет вас душить.';}
+  else if(isPower&&isSocial&&hasAct){archetype='Харизматичный лидер';archdesc='Вы ведёте людей за собой и заряжаетесь от взаимодействия с ними. Вам нужна аудитория — публичные роли, управление командой, нетворкинг.';}
+  else if(isPower&&isIdeal){archetype='Лидер с миссией';archdesc='Вы хотите влиять не ради власти, а ради изменений. Социальное предпринимательство, трансформационное лидерство, продукты со смыслом — ваша территория.';}
+  else if(isIndep&&isCuriosity&&hasAnal){archetype='Независимый аналитик-эксперт';archdesc='Вы работаете лучше всего в одиночку, погружаясь в интеллектуальные задачи. Экспертные, аналитические и исследовательские роли с высокой автономией — идеал.';}
+  else if(isOrder&&hasDisc&&hasResp){archetype='Системный исполнитель';archdesc='Вы создаёте порядок и держите слово. Роли, где важна надёжность, точность и завершённость — ваша стихия. Вы хребет любой организации.';}
+  else if(isCuriosity&&isOrder&&hasAnal){archetype='Системный мыслитель';archdesc='Вы не просто ищете знания — вы выстраиваете из них системы. Аналитика, стратегия, консалтинг, архитектура процессов — ваши сильные стороны.';}
+  else if(hasDev&&hasEmp&&isSocial){archetype='Человекоориентированный лидер';archdesc='Вы видите потенциал в людях и создаёте среду, где они раскрываются. HR, коучинг, наставничество, управление командой — ваша территория.';}
+  else if(isRomance&&isIndep){archetype='Творческий эксперт';archdesc='Эстетика и автономия — ваши главные ценности. Вы создаёте красивое и делаете это по-своему. Дизайн, бренд, авторские проекты — ваша среда.';}
+  else if(isPower&&hasCmd&&hasAch){archetype='Амбициозный строитель';archdesc='Вам важно и влиять, и достигать. Публичное лидерство, экспертная репутация, карьера в видимых индустриях — ваш путь.';}
+  else if(isTranq&&isOrder&&hasDisc){archetype='Хранитель стабильности';archdesc='Вы цените порядок, надёжность и предсказуемость. Структурированные среды с чёткими процессами дают вам ощущение контроля и безопасности.';}
+  else{archetype='Уникальный профиль';archdesc='Ваша комбинация талантов и мотиваторов создаёт редкий профиль. Ищите среды, где ценятся именно ваши сильные стороны.';}
+
+  // Roles
+  var rSet=[];
+  hk.forEach(function(k){if(P2DESIRES[k]&&P2DESIRES[k].role)rSet.push(P2DESIRES[k].role);});
+  roles=rSet.slice(0,4);
+
+  // Recs
+  if(isPower||isIndep)recs.push('Ищите среды с высокой автономией — жёсткий контроль будет вас демотивировать.');
+  if(isCuriosity||hasIdea)recs.push('Регулярно добавляйте в работу интеллектуальные задачи — без них вы будете скучать.');
+  if(isOrder||hasDisc)recs.push('Создавайте структуру сами — даже в хаотичных проектах выстраивайте свои системы.');
+  if(isIdeal)recs.push('Выбирайте проекты и компании, чья миссия вам близка — без смысла вы теряете энергию.');
+  if(isSocial)recs.push('Не работайте в изоляции — вам нужна живая команда и общение для поддержания тонуса.');
+  if(isTranq)recs.push('Принимайте просчитанные риски — полное избегание неопределённости закрывает возможности.');
+  if(!hasDisc&&!hasResp&&hasIdea)recs.push('Ваша ловушка — генерировать, но не завершать. Найдите партнёра-исполнителя или введите правило: одна идея = один результат.');
+  if(recs.length===0)recs.push('Опирайтесь на свои сильные желания при выборе задач и среды — это ваш главный компас.');
+
+  // Traps
+  hk.forEach(function(k){if(P2DESIRES[k]&&P2DESIRES[k].trap)traps.push(P2DESIRES[k].trap);});
+
+  // Phrase
+  var phrases={
+    'Независимый лидер-предприниматель':'Я строю своё — и веду других туда, куда считаю нужным.',
+    'Харизматичный лидер':'Я нахожу энергию в людях и направляю её туда, где нужны изменения.',
+    'Лидер с миссией':'Я хочу менять мир — и у меня есть сила это сделать.',
+    'Независимый аналитик-эксперт':'Я думаю сам(а) — и именно это моя главная ценность.',
+    'Системный исполнитель':'Я — живой договор: моё слово равно результату, всегда.',
+    'Системный мыслитель':'Я превращаю сложное в понятное — и это моя суперсила.',
+    'Человекоориентированный лидер':'Мой вклад измеряется не своими достижениями, а людьми, которых я помог раскрыться.',
+    'Творческий эксперт':'Я создаю красивое — по-своему, без компромиссов.',
+    'Амбициозный строитель':'Я строю то, что остаётся — и каждый день должен приближать к этому.',
+    'Хранитель стабильности':'Я создаю надёжную почву — для себя и для тех, кто рядом.'
+  };
+  phrase=phrases[archetype]||'Мои таланты и мотиваторы уникальны — и именно они определяют мой путь.';
+
+  var h='<div class="conc-card">';
+  h+='<h3>🏷 Ваш архетип: '+archetype+'</h3>';
+  h+='<p>'+archdesc+'</p>';
+  if(roles.length>0){
+    h+='<h3 style="margin-bottom:.4rem">💼 Подходящие роли</h3><div style="margin-bottom:.5rem">';
+    roles.forEach(function(r){h+='<span class="tag">'+r+'</span>';});
+    h+='</div>';
+  }
+  if(recs.length>0){
+    h+='<h3 style="margin-top:.75rem;margin-bottom:.4rem">✅ Рекомендации</h3>';
+    recs.slice(0,4).forEach(function(r){h+='<p style="margin-bottom:.4rem">→ '+r+'</p>';});
+  }
+  if(traps.length>0){
+    h+='<h3 style="margin-top:.75rem;margin-bottom:.4rem">⚠️ Ловушки профиля</h3>';
+    traps.slice(0,3).forEach(function(t){h+='<p style="margin-bottom:.4rem;color:#777">'+t+'</p>';});
+  }
+  h+='<div class="phrase-box"><p>"'+phrase+'"</p></div>';
+  h+='</div>';
+  return h;
+}
+
+window.addEventListener('DOMContentLoaded',function(){});
+</script>
+</body>
+</html>
